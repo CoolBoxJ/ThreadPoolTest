@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.MainActivity">
+
+    <Button
+        android:id="@+id/btStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开启一个新线程"/>
+
+    <Button
+        android:id="@+id/btEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭所有线程"
+        android:layout_toRightOf="@id/btStart"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listThread"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btStart"
+        />
+
+
+</RelativeLayout>
