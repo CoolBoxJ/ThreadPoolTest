@@ -1,6 +1,7 @@
 package com.jincong.simple.threadpoolsimple.model.bean;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,6 +14,7 @@ public class ThreadPoolProxy {
     public static final int MAX_THREAD_NUM = 8;
     private static ThreadPoolProxy instance = null;
     private ThreadPoolExecutor mExecutor;
+    public static ConcurrentHashMap<String, Boolean> isCanceled = new ConcurrentHashMap<>();
 
     public static ThreadPoolProxy getInstance() {
         if (instance == null) {

@@ -6,8 +6,6 @@ package com.jincong.simple.threadpoolsimple.contract;
 import com.jincong.simple.threadpoolsimple.base.BasePresenter;
 import com.jincong.simple.threadpoolsimple.base.BaseView;
 
-import java.util.concurrent.Future;
-
 public interface MainContract {
     interface IMainView extends BaseView {
 
@@ -15,8 +13,8 @@ public interface MainContract {
 
 
     abstract class AbstractHomePresenter extends BasePresenter<IMainView> {
-        public abstract Future startThread();
-        public abstract boolean endThread(Future a);
+        public abstract Runnable startThread();
+        public abstract boolean endThread(Runnable a);
         public abstract int getMaxThreadNum();
         public abstract void endAllThread();
         public abstract void startLogThread();

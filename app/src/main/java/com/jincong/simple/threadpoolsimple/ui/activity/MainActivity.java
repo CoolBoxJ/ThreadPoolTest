@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity<MainContract.IMainView, MainPrese
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapter.endAllThread();
                 mPresenter.endAllThread();
             }
         });

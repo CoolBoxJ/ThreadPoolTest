@@ -6,34 +6,29 @@ import com.jincong.simple.threadpoolsimple.model.IMainModel;
 import com.jincong.simple.threadpoolsimple.model.bean.ThreadPoolProxy;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainModelImpl implements IMainModel {
 
     @Override
-    public Future startThread() {
+    public Runnable startThread() {
         Runnable a = new AddRunnable();
         ThreadPoolProxy proxy = ThreadPoolProxy.getInstance();
         if (proxy != null && a != null) {
-            return proxy.submit(a);
+            proxy.execute(a);
+            return a;
         }
         return null;
     }
 
     @Override
-    public boolean endThread(Future a) {
+    public boolean endThread(Runnable a) {
         ThreadPoolProxy proxy = ThreadPoolProxy.getInstance();
         if (proxy != null && a != null) {
-            return proxy.remove(a);
+            return ((AddRunnable)a).cancelSelf();
         }
         return false;
     }
@@ -55,11 +50,25 @@ public class MainModelImpl implements IMainModel {
         @Override
         public void run() {
             int i = 0;
-            while (true) {
+            ThreadPoolProxy.isCanceled.put(this.toString(), false);
+            boolean con = true;
+            while (con) {
                 i++;
                 if (i >= Integer.MAX_VALUE) {
                     i = Integer.MIN_VALUE;
                 }
+                con = ThreadPoolProxy.isCanceled.get(this.toString()) != null
+                        ? !ThreadPoolProxy.isCanceled.get(this.toString())
+                        : false;
+            }
+        }
+        public boolean cancelSelf() {
+            ThreadPoolProxy.isCanceled.put(this.toString(), true);
+            if (ThreadPoolProxy.isCanceled.get(this.toString())) {
+                ThreadPoolProxy.isCanceled.remove(this.toString());
+                return true;
+            } else {
+                return false;
             }
         }
     }

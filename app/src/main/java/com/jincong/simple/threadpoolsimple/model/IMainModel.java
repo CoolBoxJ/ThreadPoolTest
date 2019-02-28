@@ -1,10 +1,8 @@
 package com.jincong.simple.threadpoolsimple.model;
 
-import java.util.concurrent.Future;
-
 public interface IMainModel {
-    Future startThread();
-    boolean endThread(Future a);
+    Runnable startThread();
+    boolean endThread(Runnable a);
     int getMaxThreadNum();
     void shutDownNow();
     void startLogThread();

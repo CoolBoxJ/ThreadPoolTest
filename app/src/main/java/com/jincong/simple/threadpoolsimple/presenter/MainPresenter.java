@@ -6,7 +6,6 @@ import com.jincong.simple.threadpoolsimple.contract.MainContract;
 import com.jincong.simple.threadpoolsimple.model.IMainModel;
 import com.jincong.simple.threadpoolsimple.model.impl.MainModelImpl;
 
-import java.util.concurrent.Future;
 
 public class MainPresenter extends MainContract.AbstractHomePresenter {
     private Context mContext;
@@ -19,12 +18,12 @@ public class MainPresenter extends MainContract.AbstractHomePresenter {
     }
 
     @Override
-    public Future startThread() {
+    public Runnable startThread() {
         return mModel.startThread();
     }
 
     @Override
-    public boolean endThread(Future a) {
+    public boolean endThread(Runnable a) {
         return mModel.endThread(a);
     }
 

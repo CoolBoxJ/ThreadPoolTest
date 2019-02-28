@@ -11,10 +11,9 @@ import com.jincong.simple.threadpoolsimple.R;
 import com.jincong.simple.threadpoolsimple.presenter.MainPresenter;
 
 import java.util.ArrayList;
-import java.util.concurrent.Future;
 
 public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<Future> mThreadList;
+    private ArrayList<Runnable> mThreadList;
     private MainPresenter mPresenter;
 
     public ThreadListAdapter(MainPresenter presenter) {
@@ -33,7 +32,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final int ps = position;
         ((ListItemViewHolder) holder).bind(mThreadList.get(position), new callBack() {
             @Override
-            public void onEvent(Future a) {
+            public void onEvent(Runnable a) {
                 if (mPresenter.endThread(mThreadList.get(ps))) {
                     mThreadList.remove(a);
                     notifyDataSetChanged();
@@ -48,14 +47,22 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public interface callBack {
-        void onEvent(Future a);
+        void onEvent(Runnable a);
     }
 
-    public void addThread(Future a) {
+    public void addThread(Runnable a) {
         if (a != null) {
             mThreadList.add(a);
             notifyDataSetChanged();
         }
+    }
+
+    public void endAllThread() {
+        for (Runnable a : mThreadList) {
+            mPresenter.endThread(a);
+        }
+        mThreadList.removeAll(mThreadList);
+        notifyDataSetChanged();
     }
 
     public static class ListItemViewHolder extends RecyclerView.ViewHolder {
@@ -68,9 +75,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mEndThread = itemView.findViewById(R.id.btEnd);
         }
 
-        public void bind(final Future run, final callBack back) {
+        public void bind(final Runnable run, final callBack back) {
             String name = run.toString();
-            mThreadName.setText(name); //.substring(name.indexOf("$"),name.length())
+            mThreadName.setText(name.substring(name.indexOf("$"),name.length()));
             mEndThread.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
